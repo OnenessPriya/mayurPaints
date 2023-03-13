@@ -94,7 +94,7 @@
 </style>
 
 <section>
-    <form method="POST" action="{{ route('admin.reward.product.update',$data->id) }}" enctype="multipart/form-data">@csrf
+    <form method="post" action="{{ route('admin.reward.product.update') }}" enctype="multipart/form-data">@csrf
        
         <div class="row">
             <div class="col-sm-9">

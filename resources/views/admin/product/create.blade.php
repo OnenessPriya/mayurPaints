@@ -9,6 +9,7 @@
         <div class="col-sm-9">
             <div class="row mb-3">
                 <div class="col-sm-8">
+                    <label class="label-control">Category <span class="text-danger">*</span> </label>
                     <select class="form-select form-select-sm" aria-label="Default select example" name="cat_id" id="category">
                         <option value="" selected disabled>Select Category</option>
                         @foreach ($category as $cat)
@@ -19,13 +20,14 @@
                 </div>
             </div>
             <div class="form-group mb-3">
+                <label class="label-control">Title <span class="text-danger">*</span> </label>
                 <input type="text" name="name" placeholder="Add Product Title" class="form-control" value="{{old('name')}}">
                 @error('name') <p class="small text-danger">{{ $message }}</p> @enderror
             </div>
 
             <div class="card shadow-sm">
                 <div class="card-header">
-                    Short Description
+                    Short Description <span class="text-danger">*</span>
                 </div>
                 <div class="card-body">
                     <textarea id="product_short_des" name="short_desc">{{old('short_desc')}}</textarea>
@@ -49,6 +51,7 @@
             <div class="card shadow-sm">
                 <div class="card-header">
                     Apply On
+                    <span class="text-danger">*</span>
                 </div>
                 <div class="card-body">
                     <textarea id="apply_on" type="text" name="apply_on" placeholder="" class="form-control">{{old('apply_on')}}</textarea> 
@@ -65,14 +68,17 @@
                 </div>
             </div>
             <div class="form-group mb-3">
+                <label class="label-control">Coverage <span class="text-danger">*</span> </label>
                 <input type="text" name="coverage" placeholder="Coverage" class="form-control" value="{{old('coverage')}}">
                 @error('coverage') <p class="small text-danger">{{ $message }}</p> @enderror
             </div>
             <div class="form-group mb-3">
+                <label class="label-control">Size <span class="text-danger">*</span> </label>
                 <input type="text" name="size" placeholder="Size" class="form-control" value="{{old('size')}}">
                 @error('size') <p class="small text-danger">{{ $message }}</p> @enderror
             </div>
             <div class="form-group mb-3">
+                <label class="label-control">Self Life <span class="text-danger">*</span> </label>
                 <input type="text" name="self_life" placeholder="Self Life" class="form-control" value="{{old('self_life')}}">
                 @error('self_life') <p class="small text-danger">{{ $message }}</p> @enderror
             </div>
@@ -82,6 +88,7 @@
 			<div class="card shadow-sm">
                 <div class="card-header">
                     Product Main Image
+                    <span class="text-danger">*</span>
                 </div>
                 <div class="card-body">
                     <div class="w-100 product__thumb">

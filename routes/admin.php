@@ -142,7 +142,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', 'Admin\ChatController@index')->name('index');
             Route::post('/store', 'Admin\ChatController@store')->name('store');
             Route::post('/store/ajax', 'Admin\ChatController@storeAjax')->name('store.ajax');
-            Route::post('/store/file/ajax/{channel_id}/{user_id}', 'Admin\ChatController@storeFileAjax')->name('store.file.ajax');
             Route::get('/view/{id}', 'Admin\ChatController@fetchMessages')->name('view');
         });
         // order
@@ -152,19 +151,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/export/csv', 'Admin\OrderController@exportCSV')->name('export.csv');
             Route::get('/{id}/status/{status}', 'Admin\OrderController@status')->name('status');
         });
+	// product
+    Route::prefix('reward')->name('reward.')->group(function () {
+        
           // product
-          Route::prefix('reward/product')->name('reward.product.')->group(function () {
+          Route::prefix('product')->name('product.')->group(function () {
             Route::get('/', 'Admin\RewardProductController@index')->name('index');
             Route::get('/create', 'Admin\RewardProductController@create')->name('create');
             Route::post('/store', 'Admin\RewardProductController@store')->name('store');
             Route::get('/{id}/view', 'Admin\RewardProductController@show')->name('view');
             Route::get('/{id}/edit', 'Admin\RewardProductController@edit')->name('edit');
-           
+            Route::post('/update', 'Admin\RewardProductController@update')->name('update');
             Route::get('/{id}/status', 'Admin\RewardProductController@status')->name('status');
             Route::get('/{id}/delete', 'Admin\RewardProductController@destroy')->name('delete');
             Route::get('/export/csv', 'Admin\RewardProductController@exportCSV')->name('export.csv');
+
+        });
+
+       
     });
-    Route::post('/reward/product/update/{id}', 'Admin\RewardProductController@update')->name('reward.product.update');
 });
 
 Route::post('/admin/logout', 'Admin\TestController@logout')->name('admin.logout');

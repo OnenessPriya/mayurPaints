@@ -47,10 +47,10 @@ class ProductController extends Controller
             "cat_id" => "required|integer",
             "name" => "required|string|max:255",
             "short_desc" => "required",
-            "desc" => "required",
-            "price" => "required",
+            "desc" => "nullable",
+            "price" => "nullable",
             "image" => "required",
-            "size" => "nullable",
+            "size" => "required",
         ]);
 
         $params = $request->except('_token');
