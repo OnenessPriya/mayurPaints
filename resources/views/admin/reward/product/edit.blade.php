@@ -1,106 +1,11 @@
 @extends('admin.layouts.app')
-
 @section('page', 'Edit Product')
 
 @section('content')
-
-<style>
-    .color_holder {
-        display: flex;
-        border: 1px dashed #ddd;
-        border-radius: 6px;
-        padding: 5px;
-        background: #f0f0f0;
-        flex-wrap: wrap;
-        margin-bottom: 10px;
-    }
-    .color_holder_single {
-        margin: 5px;
-    }
-    .color_box {
-        display: flex;
-        padding: 6px 10px;
-        border-radius: 3px;
-        align-items: center;
-        margin: 0;
-        background: #fff;
-    }
-    .color_box p {
-        margin: 0;
-    }
-    .color_box span {
-        margin-right: 10px;
-    }
-    .sizeUpload {
-        margin-bottom: 10px;
-    }
-    .size_holder {
-        padding: 10px 0;
-        border-top: 1px solid #ddd;
-    }
-    .img_thumb {
-        width: 100%;
-        padding-bottom: calc((4/3)*100%);
-        position: relative;
-        border:  1px solid #ccc;
-        max-width: 80px;
-        min-width: 80px;
-    }
-    .img_thumb img {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        object-fit: contain;
-    }
-    .remove_image {
-        display: inline-flex;
-        width: 30px;
-        height: 30px;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        color: #fff;
-        background-color: #dc3545;
-        border-color: #dc3545;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-    .remove_image i {
-        line-height: 13px;
-    }
-    .image_upload {
-        display: inline-flex;
-        padding: 0 20px;
-        border:  1px solid #ccc;
-        background: #ddd;
-        padding: 5px 12px;
-        border-radius: 3px;
-        vertical-align: top;
-        cursor: pointer;
-    }
-    .status-toggle {
-        padding: 6px 10px;
-        border-radius: 3px;
-        align-items: center;
-        background: #fff;
-    }
-    .status-toggle a {
-        text-decoration: none;
-        color: #000
-    }
-</style>
-
 <section>
-    <form method="POST" action="{{ route('admin.reward.product.update') }}" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="id" value="{{$data->id}}">
+    <form method="POST" action="{{ route('admin.reward.product.update') }}" enctype="multipart/form-data">@csrf
         <div class="row">
             <div class="col-sm-9">
-
-                
                 <div class="form-group mb-3">
                     <input type="text" name="name" placeholder="Add Product Title" class="form-control" value="{{$data->name}}">
                     @error('name') <p class="small text-danger">{{ $message }}</p> @enderror
@@ -139,19 +44,14 @@
                                 <input type="text" id="inputprice6" class="form-control" aria-describedby="priceHelpInline" name="points" value="{{$data->points}}">
                                 @error('points') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
-                            
                             </div>
-                           
                         </content>
                         </div>
-                      
-                       
                     </div>
                 </div>
-             
             </div>
+
             <div class="col-sm-3">
-                
                  <div class="card shadow-sm">
                     <div class="card-header">
                         Product Image
@@ -175,23 +75,17 @@
                         </script>
                     </div>
                 </div>
+
 				<div class="card shadow-sm" style="position: sticky;top: 60px;">
-                  
                     <div class="card-body text-end">
+                        <input type="hidden" name="id" value="{{$data->id}}">
                         <button type="submit" class="btn btn-danger w-100">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
-
-   
 </section>
-
-
-
-
 @endsection
 
 @section('script')
@@ -216,8 +110,7 @@
             $(this).closest(".multi-responsibility-links").remove();
         });
         });
-    </script>
-<script>
+
     ClassicEditor
     .create( document.querySelector( '#product_des' ) )
     .catch( error => {
@@ -228,7 +121,5 @@
     .catch( error => {
         console.error( error );
     });
-
-    
     </script>
 @endsection

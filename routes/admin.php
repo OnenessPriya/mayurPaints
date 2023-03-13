@@ -152,11 +152,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/export/csv', 'Admin\OrderController@exportCSV')->name('export.csv');
             Route::get('/{id}/status/{status}', 'Admin\OrderController@status')->name('status');
         });
-	// user
+
     Route::prefix('reward')->name('reward.')->group(function () {
-        
-          // product
-          Route::prefix('/product')->name('product.')->group(function () {
+        // product
+        Route::prefix('/product')->name('product.')->group(function () {
             Route::get('/', 'Admin\RewardProductController@index')->name('index');
             Route::get('/create', 'Admin\RewardProductController@create')->name('create');
             Route::post('/store', 'Admin\RewardProductController@store')->name('store');
@@ -166,10 +165,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/status', 'Admin\RewardProductController@status')->name('status');
             Route::get('/{id}/delete', 'Admin\RewardProductController@destroy')->name('delete');
             Route::get('/export/csv', 'Admin\RewardProductController@exportCSV')->name('export.csv');
-
         });
-
-       
     });
 });
 
