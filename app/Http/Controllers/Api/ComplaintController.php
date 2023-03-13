@@ -19,9 +19,9 @@ class ComplaintController extends Controller
         $validator = Validator::make($request->all(), [
           'user_id' => ['required', 'integer'],
           'name' => ['required', 'string', 'min:1'],
-          'mobile' => ['required'],
-          'whatsapp_no' => ['required'],
-          'address' => ['required'],
+          'mobile' => ['nullable'],
+          'whatsapp_no' => ['nullable'],
+          'address' => ['nullable'],
           'message' => ['required'],
       ]);
 

@@ -63,6 +63,7 @@ class UserController extends Controller
             "email" => "nullable|string|max:255",
             "mobile" => "required|integer|digits:10|unique:users",
             "whatsapp_no" => "required|integer|digits:10",
+            'password' => 'required|confirmed|min:6'
         ]);
 
         $params = $request->except('_token');

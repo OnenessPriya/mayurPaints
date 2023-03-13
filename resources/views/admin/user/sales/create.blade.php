@@ -57,6 +57,11 @@
                                     <input type="password" name="password" placeholder="" class="form-control" value="{{old('password')}}">
                                     @error('password') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label class="label-control">Confirm Password <span class="text-danger">*</span> </label>
+                                    <input type="password" id="password" name="password_confirmation"  class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password">
+                                  
+                                </div>
                             </div>
                             <div class="col-12 col-md-6 col-xl-12">
                                 <div class="row">

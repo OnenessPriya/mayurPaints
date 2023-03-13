@@ -94,15 +94,15 @@
 </style>
 
 <section>
-    <form method="POST" action="{{ route('admin.reward.product.update') }}" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="id" value="{{$data->id}}">
+    <form method="POST" action="{{ route('admin.reward.product.update',$data->id) }}" enctype="multipart/form-data">@csrf
+       
         <div class="row">
             <div class="col-sm-9">
 
                 
                 <div class="form-group mb-3">
                     <input type="text" name="name" placeholder="Add Product Title" class="form-control" value="{{$data->name}}">
+                    <input type="hidden" name="product_id" value="{{$data->id}}">
                     @error('name') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
 
@@ -178,6 +178,7 @@
 				<div class="card shadow-sm" style="position: sticky;top: 60px;">
                   
                     <div class="card-body text-end">
+                      
                         <button type="submit" class="btn btn-danger w-100">Save changes</button>
                     </div>
                 </div>

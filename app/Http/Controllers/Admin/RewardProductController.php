@@ -85,12 +85,12 @@ class RewardProductController extends Controller
           ]);
   
           $params = $request->except('_token');
-          $storeData = $this->RewardproductRepository->update($request->id,$params);
+          $storeData = $this->RewardproductRepository->update($request->product_id,$params);
   
           if ($storeData) {
               return redirect()->back()->with('success', 'Product updated successfully');
           } else {
-              return redirect()->route('admin.reward.product.update', $request->id)->withInput($request->all());
+              return redirect()->route('admin.reward.product.update', $request->product_id)->withInput($request->all());
           }
       }
   
