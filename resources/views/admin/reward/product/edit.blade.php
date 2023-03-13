@@ -8,6 +8,7 @@
             <div class="col-sm-9">
                 <div class="form-group mb-3">
                     <input type="text" name="name" placeholder="Add Product Title" class="form-control" value="{{$data->name}}">
+                    <input type="hidden" name="product_id" value="{{$data->id}}">
                     @error('name') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
 
