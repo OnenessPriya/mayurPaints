@@ -8,7 +8,7 @@
             <div class="col-12 px-0">
                 <ul class="list-unstyled p-0 m-0">
                     @foreach($users as $key=> $user)
-                        <li class="chat-list" onclick="fetchChatDetails($user->id)">
+                        <li class="chat-list" onclick="fetchChatDetails({{$user->id}})">
                             <div class="img">
                                 <img src="{{asset($user->image)}}"/>
                             </div>
@@ -28,18 +28,11 @@
         <iconify-icon icon="humbleicons:times"></iconify-icon>
     </div>
 
-    <form id="addToMessageForm" class="form-container">
+    <form method="post" action="{{route('admin.chat.store')}}" id="addToMessageForm" class="form-container">@csrf
         <h4>Chat</h4>
 
         <div id="messageContent">
             <ul class="list-unstyled p-0 m-0 px-4">
-                <li class="auth-user"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="auth-user"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="auth-user"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="auth-user"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="not-auth"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="not-auth"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
-                <li class="auth-user"><div class="img"><img src="https://img.freepik.com/free-photo/indian-man-smiling-cheerful-expression-closeup-portrait_53876-129387.jpg?w=740&t=st=1678447891~exp=1678448491~hmac=a75cdfc94c29852ec6602252c44d7763b5681e53bb3b23e91c592439dcd510c2"/></div> <div class="info">Comment1 <span class="chat-date">22nd Jan, 2023. 8:30 am</span></div></li>
             </ul>
         </div>
 
@@ -48,10 +41,10 @@
                 <label for='input-file'>
                 <iconify-icon icon="heroicons:paper-clip-solid"></iconify-icon>
                 </label>
-                <input id='input-file' type='file' />
+                <input id="input-file" name="message" type='file' />
             </div>
-            <textarea placeholder="Type message.." name="msg" id="msg" required></textarea>
-            <button type="submit" ><iconify-icon icon="wpf:paperplane"></iconify-icon></button>
+            <textarea placeholder="Type message.." name="message" id="msg"></textarea>
+            <button type="submit" id="reviewBtn"><iconify-icon icon="wpf:paperplane"></iconify-icon></button>
         </div>
     </form>
 </div>
@@ -59,6 +52,7 @@
 
 @section('script')
     <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         const close = document.querySelector('.times-close')
@@ -74,17 +68,87 @@
         })
         });
 
-        function fetchChatDetails($userId) {
+        function fetchChatDetails(userId) {
             $.ajax({
-                url: '{{ route('admin.chat.viw') }}',
-                type: 'post',
-                data: {
-
-                },
+                url: '{{url("/")}}/admin/chat/view/'+userId,
+                type: 'get',
                 success:function(resp) {
+                    let content = ``;
+                    $.each(resp.data, (key, value) => {
+                        // set left/ right side
+                        let side = 'auth-user';
+                        if(value.sender_id != 0) {
+                            side = 'not-auth';
+                        }
 
+                        // set text/ document
+                        if(value.flag == 'text') {
+                            content += `
+                            <li class="${side}"><div class="info"><h5>${value.message}</h5><span class="chat-date small">${moment(value.created_at).fromNow()}</span></div></li>
+                            `;
+                        } else {
+                            if (
+                                value.file_extension == ".jpg" || 
+                                value.file_extension == ".jpeg" || 
+                                value.file_extension == ".png" || 
+                                value.file_extension == ".svg"
+                            ) {
+                                content += `
+                                <li class="${side}">
+                                    <div class="info">
+                                        <img src="{{url('/')}}/${value.message}" style="height: 50px">
+                                        <a href="{{url('/')}}/${value.message}" download>
+                                            <iconify-icon icon="typcn:download"></iconify-icon>
+                                        </a>
+                                        <span class="chat-date small">${moment(value.created_at).fromNow()}</span>
+                                    </div>
+                                </li>
+                                `;
+                            } else {
+                                content += `
+                                <li class="${side}">
+                                    <div class="info">
+                                        <h5>DOCUMENT</h5>
+                                        <a href="{{url('/')}}/${value.message}" download>
+                                            <iconify-icon icon="typcn:download"></iconify-icon>
+                                        </a>
+                                        <span class="chat-date small">${moment(value.created_at).fromNow()}</span>
+                                    </div>
+                                </li>
+                                `;
+                            }
+                        }
+                    });
+
+                    $('#messageContent ul').html(content);
                 }
             })
         }
+
+        $(document).on('submit', '#addToMessageForm', (event) => {
+            event.preventDefault();
+
+            $.ajax({
+                url: "{{ route('admin.chat.store.ajax') }}",
+                type: "POST",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    message: $('#addToMessageForm input[id="input-file"]').val(),
+                    message: $('#addToMessageForm textarea[name="message"]').val(),
+                },
+                beforeSend: function() {
+                    $('#reviewBtn').attr('disabled', true).html('Adding...');
+                },
+                success: function(result) {
+                    if (result.error === false) {
+                        toastFire('success', result.message);
+                    } else {
+                        toastFire('warning', result.message);
+                    }
+
+                    $('#reviewBtn').attr('disabled', false).html('Message added');
+                }
+            });
+        });
     </script>
 @endsection

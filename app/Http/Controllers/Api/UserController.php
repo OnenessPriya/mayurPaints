@@ -101,6 +101,7 @@ class UserController extends Controller
             $user->whatsapp_no = $request->whatsapp_no ?? '';
             $user->address = $request->address ?? '';
             $user->type = 3;
+            $user->status = 1;
             $user->password = bcrypt($request['password']);
             $user->created_at = date('Y-m-d g:i:s');
             $user->updated_at = date('Y-m-d g:i:s');

@@ -101,7 +101,7 @@
 
                 <div class="row mb-3">
               
-                    <div class="col-sm-4">
+                    <div class="col-sm-8">
 						<label class="label-control">Category </label>
                         <select class="form-control" name="cat_id">
                             <option hidden selected>Select category...</option>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <input type="text" name="price" placeholder="Add price" class="form-control" value="{{old('price')}}">
+                    <input type="text" name="price" placeholder="Add price" class="form-control" value="{{old('price',$data->price)}}">
                     @error('price') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
                 <div class="card shadow-sm">
@@ -141,7 +141,7 @@
                         Apply On
                     </div>
                     <div class="card-body">
-                        <textarea id="apply_on" type="text" name="apply_on" placeholder="" class="form-control">{{old('apply_on')}}</textarea> 
+                        <textarea id="apply_on" type="text" name="apply_on" placeholder="" class="form-control">{{old('apply_on',$data->apply_on)}}</textarea> 
                         @error('apply_on') <p class="small text-danger">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -150,22 +150,23 @@
                         Apply By
                     </div>
                     <div class="card-body">
-                        <textarea id="apply_by" type="text" name="apply_by" placeholder="" class="form-control">{{old('apply_by')}}</textarea> 
+                        <textarea id="apply_by" type="text" name="apply_by" placeholder="" class="form-control">{{old('apply_by',$data->apply_by)}}</textarea> 
                         @error('apply_by') <p class="small text-danger">{{ $message }}</p> @enderror
                     </div>
                 </div>
                 <div class="form-group mb-3">
-                    <input type="text" name="coverage" placeholder="Coverage" class="form-control" value="{{old('coverage')}}">
+                    <input type="text" name="coverage" placeholder="Coverage" class="form-control" value="{{old('coverage',$data->coverage)}}">
                     @error('coverage') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
                 <div class="form-group mb-3">
-                    <input type="text" name="size" placeholder="Size" class="form-control" value="{{old('size')}}">
+                    <input type="text" name="size" placeholder="Size" class="form-control" value="{{old('size',$data->size)}}">
                     @error('size') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
                 <div class="form-group mb-3">
-                    <input type="text" name="self_life" placeholder="Self Life" class="form-control" value="{{old('self_life')}}">
+                    <input type="text" name="self_life" placeholder="Self Life" class="form-control" value="{{old('self_life',$data->self_life)}}">
                     @error('self_life') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
+            </div>
             <div class="col-sm-3">
                 
                  <div class="card shadow-sm">
@@ -202,170 +203,13 @@
     </form>
 </section>
 
-<div class="modal fade" tabindex="-1" id="addColorModal" data-bs-backdrop="static">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add new color</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form action="{{route('admin.product.variation.color.add')}}" method="post">@csrf
-                <input type="hidden" name="product_id" value="{{$id}}">
-                {{-- <input type="hidden" name="color" value="{{$productColorGroupVal->color}}"> --}}
-                <div class="form-group mb-3">
-                <select class="form-control" name="color" id="">
-                    <option value="" selected>Select color...</option>
-                    @php
-                        $color = \App\Models\Color::orderBy('name', 'asc')->get();
-                        foreach ($color as $key => $value) {
-                            echo '<option value="'.$value->id.'">'.$value->name.'</option>';
-                        }
-                    @endphp
-                </select>
-                </div>
-                <div class="form-group mb-3">
-                <select class="form-control" name="size" id="">
-                    <option value="" selected>Select size...</option>
-                    @php
-                        $sizes = \App\Models\Size::get();
-                        foreach ($sizes as $key => $value) {
-                            echo '<option value="'.$value->id.'">'.$value->name.'</option>';
-                        }
-                    @endphp
-                </select>
-                </div>
-                <div class="form-group mb-3">
-                    <input class="form-control" type="text" name="price" id="" placeholder="Price">
-                </div>
-                <div class="form-group mb-3">
-                    <input class="form-control" type="text" name="sku_code" id="" placeholder="SKU code">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success">+ Save changes</button>
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
-</div>
 
-{{-- edit color modal --}}
-<div class="modal fade" tabindex="-1" id="editColorModal">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Change color</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('admin.product.variation.color.edit')}}" method="post">@csrf
-                    <input type="hidden" name="product_id" value="{{$id}}">
-                    <input type="hidden" name="current_color" value="">
-                    <div class="form-group">
-                        <p>Style no: <strong>{{$data->style_no}}</strong></p>
-                        <p>Product: <strong>{{$data->name}}</strong></p>
-                        <p>Current Color: <strong><span id="colorName"></span></strong></p>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="editColorCode">Change color</label>
-                        <select class="form-control" name="update_color" id="editColorCode">
-                            <option value="" disabled selected>Select color...</option>
-                            @php
-                                $color = \App\Models\Color::orderBy('name', 'asc')->get();
-                                foreach ($color as $key => $value) {
-                                    echo '<option value="'.$value->id.'">'.$value->name.'</option>';
-                                }
-                            @endphp
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-success">Change color</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-{{-- rename color modal --}}
-<div class="modal fade" tabindex="-1" id="renameColorModal">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Rename color</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('admin.product.variation.color.rename')}}" method="post">@csrf
-                    <input type="hidden" name="product_id" value="{{$id}}">
-                    <input type="hidden" name="current_color2" value="">
-                    <div class="form-group">
-                        <p>Style no: <strong>{{$data->style_no}}</strong></p>
-                        <p>Product: <strong>{{$data->name}}</strong></p>
-                        <p>Current name: <strong><span id="colorName2"></span></strong></p>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label>Enter new name</label>
-                        <input type="text" class="form-control" name="update_color_name" id="">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-success">Rename color</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-{{-- rename color modal --}}
-<div class="modal fade" tabindex="-1" id="sizeDetailModal">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Size detail</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('admin.product.variation.size.edit')}}" method="post">@csrf
-                    {{-- <input type="hidden" name="product_id" value="{{$id}}"> --}}
-                    <input type="hidden" name="id" value="">
-                    <div class="form-group">
-                        <p>Style no: <strong>{{$data->style_no}}</strong></p>
-                        <p>Product: <strong>{{$data->name}}</strong></p>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label>Current Size: <span id="sizeNameDetail"></span> </label>
-                        <select class="form-control" name="size" id="">
-                            <option value="" selected>Change size...</option>
-                            @php
-                                $sizes = \App\Models\Size::get();
-                                foreach ($sizes as $key => $value) {
-                                    echo '<option value="'.$value->id.'">'.$value->name.'</option>';
-                                }
-                            @endphp
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label>Size detail</label>
-                        <input type="text" class="form-control" name="size_details" id="">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label>Price</label>
-                        <input type="text" class="form-control" name="price" id="">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label>Code</label>
-                        <input type="text" class="form-control" name="code" id="">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-success">Save size detail</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
 
 @endsection
 
@@ -373,28 +217,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-		function renameColorModalOpen(colorId, colorName) {
-            $('#colorName2').text(colorName);
-            $('input[name="update_color_name"]').val(colorName);
-            $('input[name="current_color2"]').val(colorId);
-            $('#renameColorModal').modal('show');
-        }
+		
 
-		function editColorModalOpen(colorId, colorName) {
-            $('#colorName').text(colorName);
-            $('input[name="current_color"]').val(colorId);
-            $('#editColorModal').modal('show');
-        }
-
-		function editSizeFunc(size, id, name, price, code) {
-            $('#sizeNameDetail').text(size);
-            $('#colorName3').text(name);
-            $('input[name="id"]').val(id);
-            $('input[name="size_details"]').val(name);
-            $('input[name="price"]').val(price);
-            $('input[name="code"]').val(code);
-            $('#sizeDetailModal').modal('show');
-        }
+		
 
         ClassicEditor
         .create( document.querySelector( '#product_des' ) )
@@ -412,125 +237,11 @@
             thisClickedBtn.closest('tr').remove();
         });
 
-        function sizeCheck(productId, colorId) {
-            $.ajax({
-                url : '{{route("admin.product.size")}}',
-                method : 'POST',
-                data : {'_token' : '{{csrf_token()}}', productId : productId, colorId : colorId},
-                success : function(result) {
-                    if (result.error === false) {
-                        let content = '<div class="btn-group" role="group" aria-label="Basic radio toggle button group">';
+        
+        
 
-                        $.each(result.data, (key, val) => {
-                            content += `<input type="radio" class="btn-check" name="productSize" id="productSize${val.sizeId}" autocomplete="off"><label class="btn btn-outline-primary px-4" for="productSize${val.sizeId}">${val.sizeName}</label>`;
-                        })
+       
 
-                        content += '</div>';
-
-                        $('#sizeContainer').html(content);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // toastFire('danger', 'Something Went wrong');
-                }
-            });
-        }
-
-        function deleteImage(imgId, id1, id2) {
-            $.ajax({
-                url : '{{route("admin.product.variation.image.delete")}}',
-                method : 'POST',
-                data : {'_token' : '{{csrf_token()}}', id : imgId},
-                beforeSend : function() {
-                    $('#img__holder_'+id1+'_'+id2+' a').text('Deleting...');
-                },
-                success : function(result) {
-                    $('#img__holder_'+id1+'_'+id2).hide();
-                    toastFire('success', result.message);
-                },
-                error: function(xhr, status, error) {
-                    // toastFire('danger', 'Something Went wrong');
-                }
-            });
-        }
-
-        $(".row_position").sortable({
-            delay: 150,
-            stop: function() {
-                var selectedData = new Array();
-                $('.row_position > .single-color-holder').each(function() {
-                    selectedData.push($(this).attr("id"));
-                });
-                updateOrder(selectedData);
-            }
-        });
-
-        function updateOrder(data) {
-            // $('.loading-data').show();
-            $.ajax({
-                url : "{{route('admin.product.variation.color.position')}}",
-                type : 'POST',
-                data: {
-                    _token : '{{csrf_token()}}',
-                    position : data
-                },
-                success:function(data) {
-                    // toastFire('success', 'Color position updated successfully');
-                    // $('.loading-data').hide();
-                    // console.log();
-                    if (data.status == 200) {
-                        toastFire('success', data.message);
-                    } else {
-                        toastFire('error', data.message);
-                    }
-                }
-            });
-        }
-
-        // product color status change
-        function colorStatusToggle(id, productId, colorId) {
-            $.ajax({
-                url : '{{route("admin.product.variation.color.status.toggle")}}',
-                method : 'POST',
-                data : {
-                    _token : '{{csrf_token()}}',
-                    productId : productId,
-                    colorId : colorId,
-                },
-                success : function(result) {
-                    if (result.status == 200) {
-                        // toastFire('success', result.message);
-
-                        if (result.type == 'active') {
-                            $('#'+id+' .color_box').css('background', '#fff');
-                        } else {
-                            $('#'+id+' .color_box').css('background', '#c1080a59');
-                        }
-                    } else {
-                        toastFire('error', result.message);
-                    }
-                }
-            });
-        }
-
-        function addSizeModal(colorId, colorName) {
-            $('#addColorModal .modal-title').text('Add new size');
-            $('#addColorModal select[name="color"]').html('<option value="'+colorId+'">'+colorName+'</option>');
-            $('#addColorModal').modal('show');
-        }
-
-        function addColorModal() {
-            var contentData = `
-            @php
-                $color = \App\Models\Color::orderBy('name', 'asc')->get();
-                foreach ($color as $key => $value) {
-                    echo '<option value="'.$value->id.'">'.$value->name.'</option>';
-                }
-            @endphp
-            `;
-            $('#addColorModal .modal-title').text('Add new color');
-            $('#addColorModal select[name="color"]').html('<option value="" selected>Select color...</option>'+ contentData);
-            $('#addColorModal').modal('show');
-        }
+      
     </script>
 @endsection

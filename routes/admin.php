@@ -141,7 +141,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
          Route::prefix('chat')->name('chat.')->group(function () {
             Route::get('/', 'Admin\ChatController@index')->name('index');
             Route::post('/store', 'Admin\ChatController@store')->name('store');
-            Route::get('/{id}/view', 'Admin\ChatController@fetchMessages')->name('view');
+            Route::post('/store/ajax', 'Admin\ChatController@storeAjax')->name('store.ajax');
+            Route::get('/view/{id}', 'Admin\ChatController@fetchMessages')->name('view');
         });
         // order
         Route::prefix('order')->name('order.')->group(function () {

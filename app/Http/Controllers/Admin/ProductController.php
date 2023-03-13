@@ -89,8 +89,7 @@ class ProductController extends Controller
             "short_desc" => "required",
             "desc" => "required",
             "price" => "required",
-            "image" => "required",
-            "size" => "nullable",
+            "image" => "nullable",
         ]);
 
         $params = $request->except('_token');
