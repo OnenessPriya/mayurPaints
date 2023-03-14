@@ -47,6 +47,7 @@
         </div>
     </form>
 </div>
+
 @endsection
 
 @section('script')
@@ -99,10 +100,12 @@
                                     content += `
                                     <li class="${side}">
                                         <div class="info">
-                                            <img src="{{url('/')}}/${value.message}" style="height: 50px">
-                                            <a href="{{url('/')}}/${value.message}" download>
-                                                <iconify-icon icon="typcn:download"></iconify-icon>
-                                            </a>
+                                            <div class="info-top">
+		                                    <img src="{{url('/')}}/${value.message}" style="height: 50px">
+		                                    <a href="{{url('/')}}/${value.message}" download class="chat_download_btn" title="Download">
+		                                        <iconify-icon icon="material-symbols:download"></iconify-icon>
+		                                    </a>
+                                            </div>
                                             <span class="chat-date small">${moment(value.created_at).fromNow()}</span>
                                         </div>
                                     </li>
@@ -113,7 +116,7 @@
                                         <div class="info">
                                             <h5>DOCUMENT</h5>
                                             <a href="{{url('/')}}/${value.message}" download>
-                                                <iconify-icon icon="typcn:download"></iconify-icon>
+                                                <iconify-icon icon="material-symbols:download" class="chat_download_btn" title="Download"></iconify-icon>
                                             </a>
                                             <span class="chat-date small">${moment(value.created_at).fromNow()}</span>
                                         </div>

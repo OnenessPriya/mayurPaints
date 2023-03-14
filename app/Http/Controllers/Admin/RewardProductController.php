@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -71,28 +72,52 @@ class RewardProductController extends Controller
 
           return view('admin.reward.product.edit', compact('id', 'data'));
       }
-  
-      public function update(Request $request)
-      {
-          // dd($request->all());
-  
-          $request->validate([
-              "name" => "required|string",
-              "short_desc" => "nullable",
-              "desc" => "nullable",
-              "points" => "nullable",
-              "image" => "nullable",
-          ]);
-  
-          $params = $request->except('_token');
-          $storeData = $this->RewardproductRepository->update($request->product_id,$params);
-  
-          if ($storeData) {
-              return redirect()->back()->with('success', 'Product updated successfully');
-          } else {
-              return redirect()->route('admin.reward.product.update', $request->product_id)->withInput($request->all());
-          }
-      }
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
+
+        $request->validate([
+            "id" => "required|integer|min:1",
+            "name" => "required|string",
+            "short_desc" => "nullable",
+            "desc" => "nullable",
+            "points" => "nullable",
+            "image" => "nullable",
+        ]);
+
+        $updatedEntry = RewardProduct::findOrFail($request->id);
+        $updatedEntry->name = $request->name;
+        $updatedEntry->short_desc = $request->short_desc;
+        $updatedEntry->desc = $request->desc;
+        $updatedEntry->points = $request->points;
+
+        // slug generate
+        $slug = \Str::slug($request->name, '-');
+        $slugExistCount = RewardProduct::where('slug', $slug)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        $updatedEntry->slug = $slug;
+
+        // image upload
+        if (isset($request->image)) {
+            $upload_path = "public/uploads/rewardproduct/";
+            // delete old image
+            if (Storage::exists($updatedEntry->image)) unlink($updatedEntry->image);
+
+            $image = $request->image;
+            $imageName = time() . "." . $image->getClientOriginalName();
+            $image->move($upload_path, $imageName);
+            $updatedEntry->image = $upload_path . $imageName;
+        }
+
+        $updatedEntry->save();
+
+        if ($updatedEntry) {
+            return redirect()->back()->with('success', 'Product updated successfully');
+        } else {
+            return redirect()->route('admin.reward.product.update', $request->id)->withInput($request->all());
+        }
+    }
   
       public function status(Request $request, $id)
       {
