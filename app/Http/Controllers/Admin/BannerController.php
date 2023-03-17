@@ -55,6 +55,8 @@ class BannerController extends Controller
 
         $newEntry = new Banner;
         $newEntry->title = $request->title;
+        $updateEntry->is_current = $request->is_current;
+        
         $upload_path = "public/uploads/schemes/";
 
         // image
@@ -107,7 +109,9 @@ class BannerController extends Controller
 
         $updateEntry = Banner::findOrFail($id);
         $updateEntry->title = $request->title;
-
+        $updateEntry->is_current = $request->is_current;
+       
+ 
         $upload_path = "public/uploads/schemes/";
 
         // image

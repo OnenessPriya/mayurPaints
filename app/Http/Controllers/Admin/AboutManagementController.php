@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
-use App\Models\User;
-use App\Contracts\AboutContract;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
@@ -15,24 +13,10 @@ use Session;
 
 class AboutManagementController extends BaseController
 {
-    protected $AboutRepository;
-
-    /**
-     * StateManagementController constructor.
-     * @param StateRepository $AboutRepository
-     */
-
-    public function __construct(AboutContract $AboutRepository)
-    {
-        $this->AboutRepository = $AboutRepository;
-    }
-
-    /**
-     * List all the states
-     */
+    
     public function index()
     {
-        $about = $this->AboutRepository->listaboutus();
+        $about = Setting::all();
 
         $this->setPageTitle('Abouts', 'About Us');
         return view('admin.about.index', compact('about'));
@@ -78,7 +62,7 @@ class AboutManagementController extends BaseController
      */
     public function edit($id)
     {
-        $about = $this->AboutRepository->findaboutById($id);
+        $about = Setting::findOrfail($id);
 
         $this->setPageTitle('State', 'Edit About us : '.$about->pretty_name);
         return view('admin.about.edit', compact('about'));
@@ -89,26 +73,23 @@ class AboutManagementController extends BaseController
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
         $this->validate($request, [
-            'pretty_name'      =>  'required|string|min:1',
             'content'      =>  'required|string|min:1',
-            'content1'      =>  'required|string|min:1',
-            'content2'      =>  'required|string|min:1',
-            'image'      =>  'required|mimes:jpg,jpeg,png|max:1000',
-            'banner_image'      => 'required|mimes:jpg,jpeg,png|max:1000',
 
         ]);
-
-        $params = $request->except('_token');
-
-        $about = $this->AboutRepository->updateabout($params);
+            $about= Setting::findOrFail($id);
+            $about->pretty_name = $request->pretty_name;
+            $about->content = $request->content ?? '';
+            $about->created_at = date('Y-m-d g:i:s');
+            $about->updated_at = date('Y-m-d g:i:s');
+            $about->save();
 
         if (!$about) {
-            return $this->responseRedirectBack('Error occurred while updating Abouts.', 'error', true, true);
+            return redirect()->route('admin.about.view')->withInput($request->all())->with('success', 'Something happened');
         }
-        return $this->responseRedirectBack('About has been updated successfully' ,'success',false, false);
+        return redirect()->route('admin.about.index')->with('success', 'about us updated');
     }
 
     /**
@@ -145,86 +126,13 @@ class AboutManagementController extends BaseController
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function details($id)
+    public function show($id)
     {
-        $target = $this->AboutRepository->detailsabout($id);
+        $target = Setting::where('id',$id)->get();
         $about = $target[0];
 
-        $this->setPageTitle('About-Us', 'About Details : '.$about->name);
+        $this->setPageTitle('About-Us', 'About Details : '.$about->pretty_name);
         return view('admin.about.details', compact('about'));
     }
 
-
-    public function csvStore(Request $request)
-    {
-        if (!empty($request->file)) {
-            // if ($request->input('submit') != null ) {
-            $file = $request->file('file');
-            // File Details
-            $filename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $tempPath = $file->getRealPath();
-            $fileSize = $file->getSize();
-            $mimeType = $file->getMimeType();
-
-            // Valid File Extensions
-            $valid_extension = array("csv");
-            // 50MB in Bytes
-            $maxFileSize = 50097152;
-            // Check file extension
-            if (in_array(strtolower($extension), $valid_extension)) {
-                // Check file size
-                if ($fileSize <= $maxFileSize) {
-                    // File upload location
-                    $location = 'admin/uploads/csv';
-                    // Upload file
-                    $file->move($location, $filename);
-                    // Import CSV to Database
-                    $filepath = public_path($location . "/" . $filename);
-                    // Reading file
-                    $file = fopen($filepath, "r");
-                    $importData_arr = array();
-                    $i = 0;
-                    while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
-                        $num = count($filedata);
-                        // Skip first row
-                        if ($i == 0) {
-                            $i++;
-                            continue;
-                        }
-                        for ($c = 0; $c < $num; $c++) {
-                            $importData_arr[$i][] = $filedata[$c];
-                        }
-                        $i++;
-                    }
-                    fclose($file);
-
-                    // echo '<pre>';print_r($importData_arr);exit();
-
-                    // Insert into database
-                    foreach ($importData_arr as $importData) {
-                        $storeData = 0;
-                        if(isset($importData[5]) == "Carry In") $storeData = 1;
-
-                        $insertData = array(
-                            "name" => isset($importData[0]) ? $importData[0] : null,
-                            "slug" => isset($importData[0]) ? $importData[0] : null,
-
-                        );
-                        // echo '<pre>';print_r($insertData);exit();
-                        State::insertData($insertData);
-                    }
-                    Session::flash('message', 'Import Successful.');
-                } else {
-                    Session::flash('message', 'File too large. File must be less than 50MB.');
-                }
-            } else {
-                Session::flash('message', 'Invalid File Extension. supported extensions are ' . implode(', ', $valid_extension));
-            }
-        } else {
-            Session::flash('message', 'No file found.');
-        }
-        return redirect()->route('admin.state.index');
-    }
-    // csv upload
 }

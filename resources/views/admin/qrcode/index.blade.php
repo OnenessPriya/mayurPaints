@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('page', 'Barcode')
+@section('page', 'QRCode')
 
 @section('content')
 <section>
@@ -45,14 +45,14 @@
                             <div class="row align-items-center justify-content-between">
                             <div class="col">
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    {{-- <div class="col-auto">
                                         <select name="bulk_action" class="form-control">
                                             <option value=" hidden selected">Bulk Action</option>
                                             <option value="delete">Delete</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-auto">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">Apply</button>
+                                        {{-- <button type="submit" class="btn btn-outline-danger btn-sm">Apply</button> --}}
                                         <a href="{{ route('admin.qrcode.create') }}" class="btn btn-sm btn-danger">Generate new qrcodes</a>
                                         {{-- <a href="{{ route('admin.qrcode.csv.export') }}" class="btn btn-sm btn-warning">Export all qrcodes into pdf</a> --}}
                                     </div>
@@ -80,18 +80,18 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="check-column">
+                                    {{-- <th class="check-column">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="flexCheckDefault" onclick="headerCheckFunc()">
                                             <label class="form-check-label" for="flexCheckDefault"></label>
                                         </div>
-                                    </th>
+                                    </th> --}}
                                     <th>Details</th>
                                     <th>Points</th>
                                     <th>Generated QRcodes</th>
                                     <th>Validity</th>
                                     <th>Date</th>
-                                    <th>Status</th>
+                                    {{-- <th>Status</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,7 +106,7 @@
                                 }
                                 @endphp
                                 <tr>
-                                    <td class="check-column">
+                                    {{-- <td class="check-column">
                                         <input name="delete_check[]" class="tap-to-delete" type="checkbox" onclick="clickToRemove()" value="{{$item->id}}" 
                                         @php
                                         if (old('delete_check')) {
@@ -115,12 +115,12 @@
                                             }
                                         }
                                         @endphp>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                     {{$item->name}}
                                     <div class="row__action">
                                         <a href="{{ route('admin.qrcode.view', $item->slug) }}">View</a>
-                                        <a href="{{ route('admin.qrcode.status', $item->id) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a>
+                                        {{-- <a href="{{ route('admin.qrcode.status', $item->slug) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a> --}}
                                        
                                     </div>
                                     </td>
@@ -136,7 +136,7 @@
                                     </td>
                                     <td>{{date('d M Y', strtotime($item->start_date))}} - {{date('d M Y', strtotime($item->end_date))}}</td>
                                     <td>Published<br/>{{date('d M Y', strtotime($item->created_at))}}</td>
-                                    <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td>
+                                    {{-- <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td> --}}
                                 </tr>
                                 @empty
                                 <tr><td colspan="100%" class="small text-muted">No data found</td></tr>

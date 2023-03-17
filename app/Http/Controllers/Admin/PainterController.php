@@ -82,7 +82,7 @@ class PainterController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $this->categoryRepository->deleteCategory($id);
+        $this->PainterRepository->deletePainter($id);
 
         return redirect()->route('admin.user.painter.index');
     }
@@ -112,7 +112,7 @@ class PainterController extends Controller
             $count = 1;
 
             foreach($data as $row) {
-                $datetime = date('j F, Y h:i A', strtotime($row['created_at']));
+                $datetime = date('j F, Y h:i:s', strtotime($row['created_at']));
                 $lineData = array(
                     $count,
                     $row['name'],

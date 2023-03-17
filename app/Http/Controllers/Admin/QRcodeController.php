@@ -82,9 +82,26 @@ class QRcodeController extends Controller
     public function show(Request $request, $slug)
     {
         $data = QRCode::where('slug', $slug)->first();
+        
         $coupons = QRCode::where('slug', $slug)->get();
         $usage = WalletTxn::where('qrcode_id',$data->id)->with('users')->get();
         return view('admin.qrcode.detail', compact('data','coupons','usage'));
+    }
+
+    public function view(Request $request, $id)
+    {
+        $data = QRCode::where('id', $id)->first();
+        
+        $coupons = QRCode::where('id', $id)->get();
+        $usage = WalletTxn::where('qrcode_id',$data->id)->with('users')->get();
+        return view('admin.qrcode.view', compact('data','coupons','usage'));
+    }
+
+
+    public function edit(Request $request, $id)
+    {
+        $data = QRCode::findOrfail($id);
+        return view('admin.qrcode.detail-edit', compact('data'));
     }
 
     public function update(Request $request, $id)
@@ -93,7 +110,7 @@ class QRcodeController extends Controller
 
         $request->validate([
             "name" => "required|string|max:255",
-            "amount" => "required|numeric|min:0|not_in:0",
+            "points" => "required|numeric|min:0|not_in:0",
             "max_time_of_use" => "required|integer",
             "max_time_one_can_use" => "required|integer",
             "start_date" => "required",
@@ -109,8 +126,8 @@ class QRcodeController extends Controller
             $storeData->slug = $slug;
         }
         $storeData->name = $request['name'];
-        $storeData->code = $request['code'];
-        $storeData->amount = $request['amount'];
+        //$storeData->code = $request['code'];
+        $storeData->points = $request['points'];
         $storeData->max_time_of_use = $request['max_time_of_use'];
         $storeData->max_time_one_can_use = $request['max_time_one_can_use'];
         $storeData->start_date = $request['start_date'];
@@ -118,7 +135,7 @@ class QRcodeController extends Controller
         $storeData->save();
 
         if ($storeData) {
-            return redirect()->route('admin.qrcode.index')->with('success', 'qrcode updated');
+            return redirect('/admin/qrcode/'.$storeData->slug.'/view')->with('success', 'qrcode updated');
         } else {
             return redirect()->route('admin.qrcode.view')->withInput($request->all())->with('success', 'Something happened');
         }
@@ -127,13 +144,14 @@ class QRcodeController extends Controller
     public function status(Request $request, $id)
     {
         $storeData = QRCode::findOrFail($id);
-
+        $slug=$storeData->slug;
         $status = ($storeData->status == 1) ? 0 : 1;
         $storeData->status = $status;
         $storeData->save();
 
         if ($storeData) {
-            return redirect()->route('admin.qrcode.index');
+            //return redirect()->route('admin.qrcode.view',$id);
+            return redirect('/admin/qrcode/'.$slug.'/view');
         } else {
             return redirect()->route('admin.qrcode.index')->withInput($request->all());
         }
@@ -158,7 +176,7 @@ class QRcodeController extends Controller
         if (!$validator->fails()) {
             if ($request['bulk_action'] == 'delete') {
                 foreach ($request->delete_check as $index => $delete_id) {
-                    RetailerBarcode::where('id', $delete_id)->delete();
+                    QRCode::where('id', $delete_id)->delete();
                 }
 
                 return redirect()->route('admin.qrcode.index')->with('success', 'Selected items deleted');
@@ -172,7 +190,7 @@ class QRcodeController extends Controller
 
     public function csvExport(Request $request)
     {
-        $data = RetailerBarcode::orderby('id','desc')->get()->toArray();
+        $data = QRCode::orderby('id','desc')->get()->toArray();
 
         if (count($data) > 0) {
             $delimiter = ","; 
@@ -221,7 +239,7 @@ class QRcodeController extends Controller
 
     public function csvExportSlug(Request $request, $slug)
     {
-        $data = RetailerBarcode::where('slug', $slug)->get()->toArray();
+        $data = QRCode::where('slug', $slug)->get()->toArray();
 
         if (count($data) > 0) {
             $delimiter = ","; 

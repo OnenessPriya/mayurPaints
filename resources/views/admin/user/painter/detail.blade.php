@@ -22,7 +22,9 @@
                             <p><span class="small text-dark">State :</span> {{ $data->state }}</p>
                             <p><span class="small text-dark">Pincode :</span> {{ $data->pin }}</p>
                             @if($data->aadhar)
-                            <p><span class="small text-dark">Aadhar :</span><img src="{{ asset($data->aadhar) }}">
+                            <p><span class="small text-dark">Id Proof :</span><img src="{{ asset($data->aadhar) }}" height="100" width="100"><a href="{{ asset($data->aadhar) }}" download>
+                                <i class="fa fa-download"></i>
+                            </a>
                             @endif
                             <p>Published<br/>{{date('d M Y', strtotime($data->created_at))}}</p>
 

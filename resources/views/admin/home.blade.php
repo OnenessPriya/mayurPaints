@@ -23,6 +23,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card home__card bg-gradient-danger">
+                    <div class="card-body">
+                        <h4>Total customer</h4>
+                        <p><b> {{ $data->customer}} </b></p>
+                    </div>
+                </div>
+            </div>
         
         
             <div class="col-sm-6 col-lg-3">

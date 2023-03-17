@@ -75,8 +75,9 @@ class BannerRepository implements BannerInterface
      */
     public function update($id, array $newDetails)
     {
+        
         $upload_path = "uploads/offer/";
-        $offer = Brochure::findOrFail($id);
+        $offer = Banner::findOrFail($id);
         $collection = collect($newDetails);
         // dd($newDetails);
 
@@ -96,15 +97,7 @@ class BannerRepository implements BannerInterface
                 $offer->image = $upload_path.$uploadedImage;
             }
 
-            if (isset($newDetails['pdf'])) {
-                // dd('here');
-                $pdf = $collection['pdf'];
-                $pdfName = time().".".mt_rand().".".$pdf->getClientOriginalName();
-                $pdf->move($upload_path, $pdfName);
-                $uploadedImage = $pdfName;
-                $offer->pdf = $upload_path.$uploadedImage;
-            }
-
+           
         $offer->save();
 
         return $offer;

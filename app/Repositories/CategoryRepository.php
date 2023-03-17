@@ -123,32 +123,17 @@ class CategoryRepository implements CategoryInterface
         if ($slugExistCount > 0) $slug = $slug.'-'.($slugExistCount+1);
         $category->slug = $slug;
 
-        if (isset($newDetails['icon_path'])) {
+        if (isset($newDetails['image'])) {
             // dd('here');
-            $image = $collection['icon_path'];
+            $image = $collection['image'];
             $imageName = time().".".mt_rand().".".$image->getClientOriginalName();
             $image->move($upload_path, $imageName);
             $uploadedImage = $imageName;
-            $category->icon_path = $upload_path.$uploadedImage;
+            $category->image = $upload_path.$uploadedImage;
         }
 
-        if (isset($newDetails['image_path'])) {
-            // dd('here');
-            $image = $collection['image_path'];
-            $imageName = time().".".mt_rand().".".$image->getClientOriginalName();
-            $image->move($upload_path, $imageName);
-            $uploadedImage = $imageName;
-            $category->image_path = $upload_path.$uploadedImage;
-        }
-
-        if (isset($newDetails['banner_image'])) {
-            // dd('here');
-            $bannerImage = $collection['banner_image'];
-            $bannerImageName = time().".".mt_rand().".".$bannerImage->getClientOriginalName();
-            $bannerImage->move($upload_path, $bannerImageName);
-            $uploadedImage = $bannerImageName;
-            $category->banner_image = $upload_path.$uploadedImage;
-        }
+       
+       
         // dd('outside');
 
         $category->save();

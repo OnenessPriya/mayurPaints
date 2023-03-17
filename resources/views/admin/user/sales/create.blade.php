@@ -88,15 +88,15 @@
                                         <div class="card-header p-0 mb-3">Document <span class="text-danger">*</span></div>
                                         <div class="card-body p-0">
                                             <div class="w-100 product__thumb">
-                                                <label for="icon"><img id="iconOutput" src="{{ asset('admin/images/placeholder-image.jpg') }}" /></label>
+                                                <label for="aadhar"><img id="sketchOutput" src="{{ asset('admin/images/placeholder-image.jpg') }}" /></label>
                                             </div>
-                                            <input type="file" name="aadhar" id="icon" accept="image/*" onchange="loadIcon(event)" class="d-none">
+                                            <input type="file" name="aadhar" id="aadhar" accept="image/*" onchange="loadaadhar(event)" class="d-none">
                                             <script>
-                                                let loadIcon = function(event) {
-                                                    let iconOutput = document.getElementById('iconOutput');
-                                                    iconOutput.src = URL.createObjectURL(event.target.files[0]);
-                                                    iconOutput.onload = function() {
-                                                        URL.revokeObjectURL(iconOutput.src) // free memory
+                                                let loadaadhar = function(event) {
+                                                    let sketchOutput = document.getElementById('sketchOutput');
+                                                    sketchOutput.src = URL.createObjectURL(event.target.files[0]);
+                                                    sketchOutput.onload = function() {
+                                                        URL.revokeObjectURL(sketchOutput.src) // free memory
                                                     }
                                                 };
                                             </script>

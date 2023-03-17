@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Enquery;
+use App\Models\Product;
 class EnquiryController extends Controller
 {
     /**
@@ -22,7 +23,8 @@ class EnquiryController extends Controller
         });
 
         $data = $query->latest('id')->paginate(25);
-        return view('admin.enquiry.index', compact('data', 'request'));
+        $product= Product::orderby('name')->get();
+        return view('admin.enquiry.index', compact('data', 'request','product'));
     }
 
     /**

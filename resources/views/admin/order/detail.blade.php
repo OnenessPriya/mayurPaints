@@ -62,11 +62,11 @@
                             <table class="w-100">
                                 <tr>
                                     <td><p class="small text-muted mb-0">Amount : </p></td>
-                                    <td><p class="small text-dark mb-0 text-end"> {{$data->amount}}</p></td>
+                                    <td><p class="small text-dark mb-0 text-end"> {{$data->final_amount}}</p></td>
                                 </tr>
                                 <tr class="border-top">
                                     <td><p class="small text-muted mb-0">Final Amount : </p></td>
-                                    <td><p class="small text-dark mb-0 text-end"> {{$data->amount}}</p></td>
+                                    <td><p class="small text-dark mb-0 text-end"> {{$data->final_amount}}</p></td>
                                 </tr>
                             </table>
                         </div>

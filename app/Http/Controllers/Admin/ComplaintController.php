@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Complain;
+use App\Models\Product;
 class ComplaintController extends Controller
 {
    /**
@@ -18,11 +19,12 @@ class ComplaintController extends Controller
         $query = Complain::query();
 
         $query->when($term, function($query) use ($term) {
-            $query->where('product_id', 'LIKE', '%' . $term . '%');
+            $query->where('name', 'LIKE', '%' . $term . '%');
         });
 
         $data = $query->latest('id')->paginate(25);
-        return view('admin.complaint.index', compact('data', 'request'));
+        $product= Product::orderby('name')->get();
+        return view('admin.complaint.index', compact('data', 'request','product'));
     }
 
     /**

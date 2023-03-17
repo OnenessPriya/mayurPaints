@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h3 class="text-muted">{{ $data->name }}</h3>
+                            <h3 class="text-muted">{{ $data->code }}</h3>
                             {{-- <h6>{{ $data->name }}</h6> --}}
                         </div>
                         <div class="col-md-4 text-end">
@@ -24,15 +24,12 @@
                         <div class="col-md-12">
                             <p class="small text-muted mt-4 mb-2">Details</p>
                             <table class="">
-                                <tr>
-                                    <td class="text-muted">No of qrcodes: </td>
-                                    <td>{{count($coupons)}}</td>
-                                </tr>
+                               
                                 <tr>
                                     <td class="text-muted">Points: </td>
                                     <td>{{$data->type == 1 ? $data->points.' ' : ' '. $data->points}}</td>
                                 </tr>
-                                {{-- <tr>
+                                <tr>
                                     <td class="text-muted">Max time usage : </td>
                                     <td>{{$data->max_time_of_use}}</td>
                                 </tr>
@@ -43,7 +40,7 @@
                                 <tr>
                                     <td class="text-muted">No of usage : </td>
                                     <td>{{$data->no_of_usage}}</td>
-                                </tr> --}}
+                                </tr>
                                 <tr>
                                     <td class="text-muted">Start date: </td>
                                     <td>{{ date('j M Y', strtotime($data->start_date)) }}</td>
@@ -56,7 +53,7 @@
 
                             <hr>
 
-                            <p class="small text-muted mt-4 mb-2">QRcodes</p>
+                            {{-- <p class="small text-muted mt-4 mb-2">QRcodes</p>
                             <div class="col-auto">
                                 <a type="button" id="basic" class="btn btn-outline-danger btn-sm">Download pdf</a>
                             </div>
@@ -74,7 +71,7 @@
                                     <td>{{$couponKey+1}}</td>
                                     <td>{{$coupon->code}}
                                         <div class="row__action">
-                                            <a href="{{ route('admin.qrcode.show', $coupon->id) }}">View</a>
+                                            <a href="{{ route('admin.qrcode.edit', $coupon->id) }}">Edit</a>
                                             <a href="{{ route('admin.qrcode.edit', $coupon->id) }}">Edit</a>
                                             <a href="{{ route('admin.qrcode.status', $coupon->id) }}">{{($coupon->status == 1) ? 'Active' : 'Inactive'}}</a>
                                            
@@ -97,8 +94,8 @@
                                 @empty
                                 <tr><td colspan="100%" class="small text-muted">No data found</td></tr>
                                 @endforelse
-                            </table>
-                            {{-- <p class="small text-muted mt-4 mb-2">QRcode Usage</p>
+                            </table> --}}
+                            <p class="small text-muted mt-4 mb-2">QRcode Usage</p>
 
                             <table class="table table-sm">
                                 <tr>
@@ -125,7 +122,7 @@
                                 @empty
                                 <tr><td colspan="100%" class="small text-muted">No data found</td></tr>
                                 @endforelse
-                            </table> --}}
+                            </table>
                           
                         </div>
                     </div>

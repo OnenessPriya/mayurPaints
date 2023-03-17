@@ -12,7 +12,7 @@
                 <div class="col-md-9 text-end">
                     <form class="row align-items-end" action="{{ route('admin.complaint.index') }}">
                         <div class="col">
-                            <input type="search" name="term" id="term" class="form-control form-control-sm" placeholder="Search by product name." value="{{app('request')->input('term')}}" autocomplete="off">
+                            <input type="search" name="term" id="term" class="form-control form-control-sm" placeholder="Search by  name." value="{{app('request')->input('term')}}" autocomplete="off">
                         </div>
                         <div class="col">
                             <div class="btn-group">
@@ -54,9 +54,11 @@
                 </td>
                 <td>
                     {{-- {{dd($item->userDetails )}} --}}
-                    @if($item->userDetails->type==1)<span class="badge bg-success">Painter </span>
-                    @elseif($item->userDetails->type==2)<span class="badge bg-danger">Sales Person </span>
-                    @elseif($item->userDetails->type==3)<span class="badge bg-primary">Customer </span>
+                    @if(!empty($item->user))
+                    @if($item->user->type==1)<span class="badge bg-success">Painter </span>
+                    @elseif($item->user->type==2)<span class="badge bg-danger">Sales Person </span>
+                    @elseif($item->user->type==3)<span class="badge bg-primary">Customer </span>
+                    @endif
                     @endif
                 </td>
                 <td>

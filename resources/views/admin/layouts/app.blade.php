@@ -79,6 +79,7 @@
 				<li class="{{ ( request()->is('admin/order*') ) ? 'active' : '' }}"><a href="{{ route('admin.order.index') }}"><i class="fi fi-br-database"></i> <span>Order</span></a></li>
 
                 <li class="{{ ( request()->is('admin/chat*') ) ? 'active' : '' }}"><a href="{{ route('admin.chat.index') }}"><i class="fi fi-br-database"></i> <span>Chat</span></a></li> 
+                <li class="{{ ( request()->is('admin/about*') ) ? 'active' : '' }}"><a href="{{ route('admin.about.index') }}"><i class="fi fi-br-database"></i> <span>About us</span></a></li> 
             </ul>
         </nav>
          <div class="nav__footer">

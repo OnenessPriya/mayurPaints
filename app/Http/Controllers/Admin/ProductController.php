@@ -47,9 +47,10 @@ class ProductController extends Controller
             "cat_id" => "required|integer",
             "name" => "required|string|max:255",
             "short_desc" => "required",
-            "desc" => "nullable",
-            "price" => "nullable",
+            "self_life" => "required",
+            "coverage" => "required",
             "image" => "required",
+            "apply_on" => "required",
             "size" => "required",
         ]);
 
@@ -86,9 +87,9 @@ class ProductController extends Controller
         $request->validate([
             "cat_id" => "required|integer",
             "name" => "required|string|max:255",
-            "short_desc" => "required",
-            "desc" => "required",
-            "price" => "required",
+            "short_desc" => "nullable",
+            "desc" => "nullable",
+            "price" => "nullable",
             "image" => "nullable",
         ]);
 
@@ -169,11 +170,11 @@ class ProductController extends Controller
                     $count,
                     $row['name'],
                     $row->category->name,
-                    $row['short_desc'],
-                    $row['desc'],
+                    strip_tags($row['short_desc']),
+                    strip_tags($row['desc']),
                     $row['price'],
-                    $row['apply_on'],
-                    $row['apply_by'],
+                    strip_tags($row['apply_on']),
+                    strip_tags($row['apply_by']),
                     $row['coverage'],
                     $row['size'],
                     $row['self_life'],

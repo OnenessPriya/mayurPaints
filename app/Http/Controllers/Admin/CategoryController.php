@@ -150,7 +150,7 @@ class CategoryController extends Controller
         return redirect()->route('admin.category.index');
     }
 
-    public function exportCSV()
+    public function exportCSV(request $request)
     {
         if (!empty($request->term)) {
 
@@ -169,7 +169,7 @@ class CategoryController extends Controller
             $f = fopen('php://memory', 'w');
 
             // Set column headers
-            $fields = array('SR','Name','Description','Product','Status', 'Datetime');
+            $fields = array('SR','Name','Description','Status', 'Datetime');
             fputcsv($f, $fields, $delimiter);
 
             $count = 1;
@@ -180,7 +180,6 @@ class CategoryController extends Controller
                     $count,
                     $row['name'],
                     $row['description'],
-                    $row->parentCatDetails ? $row->parentCatDetails->name : '',
                     ($row->status == 1) ? 'Active' : 'Inactive',
                     $datetime
                 );

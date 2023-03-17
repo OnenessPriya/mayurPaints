@@ -145,7 +145,17 @@ class UserController extends Controller
             $userCheck = User::where('mobile', $mobile)->first();
             if ($userCheck) {
                  if (Hash::check($password, $userCheck->password)) {
-                     return response()->json(['error' => false, 'resp' => 'Login successful', 'data' => $userCheck]);
+                    if($userCheck->type==1){
+                        $status = $userCheck->is_approve;
+                        if ($status == 0) {
+                            return response()->json(['error' => true, 'resp' =>  'Your account is temporary blocked. Contact Admin']);
+                        }
+                        else{
+                            return response()->json(['error' => false, 'resp' => 'Login successful', 'data' => $userCheck]);
+                        }
+                    }else{
+                        return response()->json(['error' => false, 'resp' => 'Login successful', 'data' => $userCheck]);
+                    }
                  } else {
                      return response()->json(['error' => true, 'resp' => 'You have entered wrong login credential. Please try with the correct one.', 'data' => $userCheck->password]);
                  }

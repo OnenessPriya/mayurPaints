@@ -38,7 +38,8 @@ class AdminController extends Controller
     {
         $data = (object)[];
         $data->salesperson=User::where('type','2')->count();
-        $data->painter=User::where('type','3')->count();
+        $data->customer=User::where('type','3')->count();
+        $data->painter=User::where('type','1')->count();
         $data->product=Product::count();
         return view('admin.home', compact('data'));
     }

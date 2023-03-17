@@ -10,9 +10,9 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            @if($data->userDetails->type==1)<span class="badge bg-success">Painter </span>
-                            @elseif($data->userDetails->type==2)<span class="badge bg-danger">Sales Person </span>
-                            @elseif($data->userDetails->type==3)<span class="badge bg-primary">Customer </span>
+                            @if($data->user->type==1)<span class="badge bg-success">Painter </span>
+                            @elseif($data->user->type==2)<span class="badge bg-danger">Sales Person </span>
+                            @elseif($data->user->type==3)<span class="badge bg-primary">Customer </span>
                             @endif
                             <h3>User Name : {{ $data->name }}</h3>
                             <p class="small">Mobile: {{ $data->mobile }}</p>

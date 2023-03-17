@@ -113,7 +113,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/csv/export', 'Admin\QRcodeController@csvExport')->name('csv.export');
             Route::get('{slug}/csv/export', 'Admin\QRcodeController@csvExportSlug')->name('detail.csv.export');
             Route::post('/store', 'Admin\QRcodeController@store')->name('store');
-            Route::get('/{id}/view', 'Admin\QRcodeController@show')->name('view');
+            Route::get('/{id}/edit', 'Admin\QRcodeController@edit')->name('edit');
+            Route::get('/{slug}/view', 'Admin\QRcodeController@show')->name('view');
+            Route::get('/{id}/show', 'Admin\QRcodeController@view')->name('show');
             Route::post('/{id}/update', 'Admin\QRcodeController@update')->name('update');
             Route::get('/{id}/status', 'Admin\QRcodeController@status')->name('status');
             Route::get('/{id}/delete', 'Admin\QRcodeController@destroy')->name('delete');
@@ -122,10 +124,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
         // faq
         Route::prefix('about')->name('about.')->group(function () {
-            Route::get('/', 'Admin\AboutController@index')->name('index');
-            Route::post('/store', 'Admin\AboutController@store')->name('store');
-            Route::get('/{id}/view', 'Admin\AboutController@show')->name('view');
-            Route::post('/{id}/update', 'Admin\AboutController@update')->name('update');
+            Route::get('/', 'Admin\AboutManagementController@index')->name('index');
+            Route::get('/{id}/view', 'Admin\AboutManagementController@show')->name('view');
+            Route::post('/{id}/update', 'Admin\AboutManagementController@update')->name('update');
         });
          // enquiry
          Route::prefix('enquiry')->name('enquiry.')->group(function () {

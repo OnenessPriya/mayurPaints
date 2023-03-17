@@ -36,48 +36,53 @@ class QRcodeController extends Controller
             }else{
                 // qrCode validity check
                 if ($qrCode->end_date < \Carbon\Carbon::now() || $qrCode->status == 0) {
-                    return response()->json(['error'=>true, 'resp'=>'QRcode is expired']);
+                    return response()->json(['error'=>true, 'resp'=>'QRcode is expired/inactive']);
                 }else{
                     //no of usage check
                     if ($qrCode->no_of_usage == $qrCode->max_time_of_use || $qrCode->no_of_usage >= $qrCode->max_time_of_use) {
                         return response()->json(['error'=>true, 'resp'=>'Usage limit expired']);
                     }else{
-                        $userExist=User::where('id',$userId)->first();
-                        if(!$userExist){
-                            return response()->json(['error'=>false, 'resp'=>'User is invalid']);
+                        $usage = WalletTxn::where('qrcode_id',$qrCode->id)->with('users')->count();
+                        if ($usage == $qrCode->max_time_one_can_use || $usage >= $qrCode->max_time_one_can_use) {
+                            return response()->json(['error'=>true, 'resp'=>'Usage limit for single user expired']);
                         }else{
-                            $user=User::findOrFail($userId);
-                            $user->total_points += $qrCode->points;
-                            $user->save();
-                            $userAmount=WalletTxn::where('user_id',$userId)->orderby('id','desc')->first();
-                            $walletTxn=new WalletTxn();
-                            $walletTxn->user_id = $userId;
-                            $walletTxn->qrcode_id = $qrCode->id;
-                            $walletTxn->qrcode = $qrCode->code;
-                            $walletTxn->amount = $qrCode->points;
-                            $walletTxn->type = 1 ?? '';
-                            if(!$userAmount)
-                                $walletTxn->final_amount += $qrCode->points ?? '';
-                            else
-                                $walletTxn->final_amount = $userAmount->final_amount+ $qrCode->amount ?? '';
-                            $walletTxn->created_at = date('Y-m-d H:i:s');
-                            $walletTxn->updated_at = date('Y-m-d H:i:s');
-                            $walletTxn->save();
-                            $userwalletTxn=new UserTxnHistory();
-                            $userwalletTxn->user_id = $userId;
-                            $userwalletTxn->qrcode_id = $qrCode->id;
-                            $userwalletTxn->qrcode = $qrCode->code;
-                            $userwalletTxn->amount = $qrCode->points;
-                            $userwalletTxn->type = 'QRcode scan' ?? '';
-                            $userwalletTxn->title = $qrCode->points.' points earn';
-                            $userwalletTxn->desc = 'Using '.$qrCode->code.' code';
-                            $userwalletTxn->status = 'increment';
-                            $userwalletTxn->created_at = date('Y-m-d H:i:s');
-                            $userwalletTxn->updated_at = date('Y-m-d H:i:s');
-                            $userwalletTxn->save();
-                            $qrcodeDetails=QRCode::findOrFail($qrCode->id);
-                            $qrcodeDetails->no_of_usage = $qrCode->no_of_usage+1;
-                            $qrcodeDetails->save();
+                            $userExist=User::where('id',$userId)->first();
+                            if(!$userExist){
+                                return response()->json(['error'=>false, 'resp'=>'User is invalid']);
+                            }else{
+                                $user=User::findOrFail($userId);
+                                $user->total_points += $qrCode->points;
+                                $user->save();
+                                $userAmount=WalletTxn::where('user_id',$userId)->orderby('id','desc')->first();
+                                $walletTxn=new WalletTxn();
+                                $walletTxn->user_id = $userId;
+                                $walletTxn->qrcode_id = $qrCode->id;
+                                $walletTxn->qrcode = $qrCode->code;
+                                $walletTxn->amount = $qrCode->points;
+                                $walletTxn->type = 1 ?? '';
+                                if(!$userAmount)
+                                    $walletTxn->final_amount += $qrCode->points ?? '';
+                                else
+                                    $walletTxn->final_amount = $userAmount->final_amount+ $qrCode->amount ?? '';
+                                $walletTxn->created_at = date('Y-m-d H:i:s');
+                                $walletTxn->updated_at = date('Y-m-d H:i:s');
+                                $walletTxn->save();
+                                $userwalletTxn=new UserTxnHistory();
+                                $userwalletTxn->user_id = $userId;
+                                $userwalletTxn->qrcode_id = $qrCode->id;
+                                $userwalletTxn->qrcode = $qrCode->code;
+                                $userwalletTxn->amount = $qrCode->points;
+                                $userwalletTxn->type = 'QRcode scan' ?? '';
+                                $userwalletTxn->title = $qrCode->points.' points earn';
+                                $userwalletTxn->desc = 'Using '.$qrCode->code.' code';
+                                $userwalletTxn->status = 'increment';
+                                $userwalletTxn->created_at = date('Y-m-d H:i:s');
+                                $userwalletTxn->updated_at = date('Y-m-d H:i:s');
+                                $userwalletTxn->save();
+                                $qrcodeDetails=QRCode::findOrFail($qrCode->id);
+                                $qrcodeDetails->no_of_usage = $qrCode->no_of_usage+1;
+                                $qrcodeDetails->save();
+                            }
                         }
                     }
 

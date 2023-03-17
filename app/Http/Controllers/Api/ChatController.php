@@ -48,7 +48,7 @@ class ChatController extends Controller
             if(!$Exist){
                 return response()->json(['error'=>false, 'resp'=>'Chat not started']);
             }else{
-                $chat= DB::select("select * from chats where channel_id	='$id' ORDER BY id desc");
+                $chat= DB::select("select * from chats where channel_id	='$id' ORDER BY id asc");
                 if(!$chat){
                     return response()->json(['error' => true, 'message' => 'No chat found']);
                     
@@ -126,6 +126,7 @@ class ChatController extends Controller
                  $channel->receiver_id = 0;
                  $channel->message = $request->message;
                  $channel->flag = $request->flag;
+                 $channel->file_extension = $request->file_extension;
                  $channel->created_at = now();
                  $channel->updated_at = now();
                  $channel->save();

@@ -12,7 +12,12 @@
                 <div class="col-md-9 text-end">
                     <form class="row align-items-end" action="{{ route('admin.enquiry.index') }}">
                         <div class="col">
-                            <input type="search" name="term" id="term" class="form-control form-control-sm" placeholder="Search by product name." value="{{app('request')->input('term')}}" autocomplete="off">
+                            <select class="form-select form-select-sm" aria-label="Default select example" name="term" id="category">
+                                <option value="" selected disabled>Select Product</option>
+                                @foreach ($product as $cat)
+                                    <option value="{{$cat->id}}" {{request()->input('term') == $cat->id ? 'selected' : ''}}> {{$cat->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col">
                             <div class="btn-group">

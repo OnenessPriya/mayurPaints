@@ -24,7 +24,7 @@
                     <div class="search__filter">
                         <div class="row align-items-center justify-content-between">
                             <div class="col">
-                                <ul>
+                                {{-- <ul>
                                     <li class="active"><a href="{{ route('admin.user.sales-person.index') }}">All <span class="count">({{$data->count()}})</span></a></li>
                                     @php
                                     $activeCount = $inactiveCount = 0;
@@ -35,7 +35,7 @@
                                     @endphp
                                     <li><a href="{{ route('admin.user.sales-person.index', ['status' => 'active'])}}">Active <span class="count">({{$activeCount}})</span></a></li>
                                     <li><a href="{{ route('admin.user.sales-person.index', ['status' => 'inactive'])}}">Inactive <span class="count">({{$inactiveCount}})</span></a></li>
-                                </ul>
+                                </ul> --}}
                             </div>
                             <div class="col-auto">
                                 <form action="{{ route('admin.user.sales-person.index') }}" method="GET">
@@ -70,7 +70,7 @@
                                 <th>Designation</th>
                                 <th>Contact</th>
                                 <th>WhatsApp</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -90,7 +90,7 @@
                                     <div class="row__action">
                                         <a href="{{ route('admin.user.sales-person.view', $item->id) }}">View</a>
                                         <a href="{{ route('admin.user.sales-person.edit', $item->id) }}">Edit</a>
-                                        <a href="{{ route('admin.user.sales-person.status', $item->id) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a>
+                                        {{-- <a href="{{ route('admin.user.sales-person.status', $item->id) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a> --}}
                                         <a href="{{ route('admin.user.sales-person.delete', $item->id) }}" class="text-danger">Delete</a>
                                     </div>
                                 </td>
@@ -99,7 +99,7 @@
                                 </td>
                                 <td>{{ $item->mobile }} <br> {{ $item->email }}</td>
                                 <td>{{ $item->whatsapp_no }}</td>
-                                <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td>
+                                {{-- <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td> --}}
                             </tr>
                             @empty
                                 <tr><td colspan="100%" class="small text-muted">No data found</td></tr>

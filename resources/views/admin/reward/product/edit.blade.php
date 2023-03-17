@@ -42,7 +42,7 @@
                                 <label for="inputPassword6" class="col-form-label">Points</label>
                             </div>
                             <div class="col-auto">
-                                <input type="text" id="inputprice6" class="form-control" aria-describedby="priceHelpInline" name="points" value="{{$data->points}}">
+                                <input type="number" id="inputprice6" class="form-control" aria-describedby="priceHelpInline" name="points" value="{{$data->points}}">
                                 @error('points') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
                             </div>

@@ -29,12 +29,12 @@
                                     @php
                                     $activeCount = $inactiveCount = 0;
                                     foreach ($data as $catKey => $catVal) {
-                                    if ($catVal->status == 1) $activeCount++;
+                                    if ($catVal->is_approve == 1) $activeCount++;
                                     else $inactiveCount++;
                                     }
                                     @endphp
-                                    <li><a href="{{ route('admin.user.painter.index', ['status' => 'active'])}}">Active <span class="count">({{$activeCount}})</span></a></li>
-                                    <li><a href="{{ route('admin.user.painter.index', ['status' => 'inactive'])}}">Inactive <span class="count">({{$inactiveCount}})</span></a></li>
+                                    <li><a href="{{ route('admin.user.painter.index')}}">Verified <span class="count">({{$activeCount}})</span></a></li>
+                                    <li><a href="{{ route('admin.user.painter.index')}}">Not Verified <span class="count">({{$inactiveCount}})</span></a></li>
                                 </ul>
                             </div>
                             <div class="col-auto">
@@ -65,7 +65,7 @@
                                 <th>Designation</th>
                                 <th>Contact</th>
                                 <th>WhatsApp</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Account Verification</th>
                             </tr>
                         </thead>
@@ -85,7 +85,7 @@
                                     {{$item->name}}
                                     <div class="row__action">
                                         <a href="{{ route('admin.user.painter.view', $item->id) }}">View</a>
-                                        <a href="{{ route('admin.user.painter.status', $item->id) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a>
+                                        {{-- <a href="{{ route('admin.user.painter.status', $item->id) }}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</a> --}}
                                         <a href="{{ route('admin.user.painter.delete', $item->id) }}" class="text-danger">Delete</a>
                                         <a href="{{ route('admin.user.painter.verification', $item->id) }}">{{($item->is_approve == 1) ? 'Verified' : 'Not verified'}}</a>
                                     </div>
@@ -95,7 +95,7 @@
                                 </td>
                                 <td>{{ $item->mobile }} <br> {{ $item->email }}</td>
                                 <td>{{ $item->whatsapp_no }}</td>
-                                <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td>
+                                {{-- <td><span class="badge bg-{{($item->status == 1) ? 'success' : 'danger'}}">{{($item->status == 1) ? 'Active' : 'Inactive'}}</span></td> --}}
                                 <td><span class="badge bg-{{($item->is_approve == 1) ? 'success' : 'danger'}}">{{($item->is_approve == 1) ? 'Verified' : 'Not verified'}}</span></td>
                             </tr>
                             @empty

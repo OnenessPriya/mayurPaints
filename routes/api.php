@@ -72,7 +72,8 @@ Route::post('place/order', 'Api\OrderController@placeOrder');
 
 //banner
 Route::get('banner', 'Api\BannerController@index');
-
+//about
+Route::get('about', 'Api\BannerController@about');
 //add complaint
 Route::post('add/complaint', 'Api\ComplaintController@store');
 
